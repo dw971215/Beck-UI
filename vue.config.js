@@ -33,13 +33,22 @@ module.exports = {
     open: true,
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
+      //proxy 按照顺序匹配 优先执行
+      [process.env.VUE_APP_TASK_API]: {
+        target: `http://127.0.0.1:8280`,
+        changeOrigin: true,
+        pathRewrite: {
+           ['^' + process.env.VUE_APP_TASK_API]: '/api'
+        }
+      },
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://localhost:8080`,
+        target: `http://127.0.0.1:8080`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
       }
+
     },
     disableHostCheck: true
   },
@@ -79,7 +88,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()
@@ -107,10 +116,9 @@ module.exports = {
                 }
               }
             })
-          config.optimization.runtimeChunk('single'),
-          {
-             from: path.resolve(__dirname, './public/robots.txt'), //防爬虫文件
-             to: './', //到根目录下
+          config.optimization.runtimeChunk('single'), {
+            from: path.resolve(__dirname, './public/robots.txt'), //防爬虫文件
+            to: './', //到根目录下
           }
         }
       )
