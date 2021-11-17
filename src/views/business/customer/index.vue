@@ -18,6 +18,10 @@
         <el-input v-model="queryParams.nickName" placeholder="请输入用户昵称" clearable size="small"
           @keyup.enter.native="handleQuery" />
       </el-form-item>
+      <el-form-item label="真实姓名" prop="realName">
+        <el-input v-model="queryParams.realName" placeholder="请输入真实姓名" clearable size="small"
+          @keyup.enter.native="handleQuery" />
+      </el-form-item>
       <el-form-item label="手机号码" prop="mobile">
         <el-input v-model="queryParams.mobile" placeholder="请输入手机号码" clearable size="small"
           @keyup.enter.native="handleQuery" />
@@ -25,6 +29,38 @@
       <el-form-item label="openid" prop="wxOpenid">
         <el-input v-model="queryParams.wxOpenid" placeholder="请输入微信用户openid" clearable size="small"
           @keyup.enter.native="handleQuery" />
+      </el-form-item>
+      <el-form-item label="性别" prop="gender">
+        <el-select
+          v-model="queryParams.gender"
+          placeholder="性别"
+          clearable
+          size="small"
+          style="width: 205px"
+        >
+          <el-option
+            v-for="dict in genderOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="用户来源" prop="customerSource">
+        <el-select
+          v-model="queryParams.customerSource"
+          placeholder="用户来源"
+          clearable
+          size="small"
+          style="width: 205px"
+        >
+          <el-option
+            v-for="dict in sourceOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -69,6 +105,8 @@
           </el-popover>
         </template>
       </el-table-column>
+      <el-table-column label="性别" align="center" prop="gender" :formatter="genderFormat"/>
+       <el-table-column label="真实姓名" align="center" prop="realName" />
       <el-table-column label="用户昵称" align="center" prop="nickName" />
       <el-table-column label="手机号码" align="center" prop="mobile" />
       <el-table-column label="微信用户openid" align="center" prop="wxOpenid" />
@@ -95,8 +133,21 @@
         <el-form-item label="登录账号" prop="loginName">
           <el-input v-model="form.loginName" placeholder="请输入登录账号" />
         </el-form-item>
+        <el-form-item label="真实姓名" prop="nickName">
+          <el-input v-model="form.realName" placeholder="请输入真实姓名" />
+        </el-form-item>
         <el-form-item label="用户昵称" prop="nickName">
           <el-input v-model="form.nickName" placeholder="请输入用户昵称" />
+        </el-form-item>
+        <el-form-item label="性别" prop="gender">
+          <el-select v-model="form.gender" placeholder="请选择"  clearable :style="{width: '100%'}">
+            <el-option
+              v-for="dict in genderOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="手机号码" prop="mobile">
           <el-input v-model="form.mobile" :maxlength="11" placeholder="请输入手机号码" />
@@ -170,6 +221,8 @@
         open: false,
         // 客户来源数据字典
         sourceOptions: [],
+        //性别数据字典
+        genderOptions: [],
         // 查询参数
         queryParams: {
           pageNum: 1,
@@ -192,6 +245,9 @@
       this.getDicts("customer_source").then(response => {
         this.sourceOptions = response.data;
       });
+      this.getDicts("sys_user_sex").then(response => {
+        this.genderOptions = response.data;
+      });
     },
     methods: {
       /** 查询用户列表 */
@@ -206,6 +262,10 @@
       // 操作日志状态字典翻译
       sourceFormat(row, column) {
         return this.selectDictLabel(this.sourceOptions, row.customerSource);
+      },
+      // 性别字典翻译
+      genderFormat(row, column) {
+        return this.selectDictLabel(this.genderOptions, row.gender);
       },
       // 取消按钮
       cancel() {

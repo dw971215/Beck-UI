@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const api =  '/api'
+const api =  ''
 
 // 查询调度日志列表
 export function listJobLog(query) {
