@@ -31,35 +31,15 @@
           @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="性别" prop="gender">
-        <el-select
-          v-model="queryParams.gender"
-          placeholder="性别"
-          clearable
-          size="small"
-          style="width: 205px"
-        >
-          <el-option
-            v-for="dict in genderOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
+        <el-select v-model="queryParams.gender" placeholder="性别" clearable size="small" style="width: 205px">
+          <el-option v-for="dict in genderOptions" :key="dict.dictValue" :label="dict.dictLabel"
+            :value="dict.dictValue" />
         </el-select>
       </el-form-item>
       <el-form-item label="用户来源" prop="customerSource">
-        <el-select
-          v-model="queryParams.customerSource"
-          placeholder="用户来源"
-          clearable
-          size="small"
-          style="width: 205px"
-        >
-          <el-option
-            v-for="dict in sourceOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
+        <el-select v-model="queryParams.customerSource" placeholder="用户来源" clearable size="small" style="width: 205px">
+          <el-option v-for="dict in sourceOptions" :key="dict.dictValue" :label="dict.dictLabel"
+            :value="dict.dictValue" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -95,7 +75,7 @@
       <el-table-column label="登录账号" align="center" prop="loginName" />
       <!-- <el-table-column label="登录密码" align="center" prop="loginPassword" /> -->
       <el-table-column label="用户头像">
-       <template slot-scope="scope">
+        <template slot-scope="scope">
           <el-popover placement="top" trigger="click" width="190">
             <a :href="scope.row.loginPhoto" target="_blank" title="查看最大化图片">
               <img :src="scope.row.loginPhoto" style="width: 160px;height:160px">
@@ -105,12 +85,13 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column label="性别" align="center" prop="gender" :formatter="genderFormat"/>
-       <el-table-column label="真实姓名" align="center" prop="realName" />
+      <el-table-column label="性别" align="center" prop="gender" :formatter="genderFormat" />
+      <el-table-column label="真实姓名" align="center" prop="realName" />
       <el-table-column label="用户昵称" align="center" prop="nickName" />
+      <el-table-column label="生日" align="center" prop="birthday" />
       <el-table-column label="手机号码" align="center" prop="mobile" />
       <el-table-column label="微信用户openid" align="center" prop="wxOpenid" />
-      <el-table-column label="用户来源" align="center" prop="customerSource" :formatter="sourceFormat"/>
+      <el-table-column label="用户来源" align="center" prop="customerSource" :formatter="sourceFormat" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -139,14 +120,15 @@
         <el-form-item label="用户昵称" prop="nickName">
           <el-input v-model="form.nickName" placeholder="请输入用户昵称" />
         </el-form-item>
+        <el-form-item label="生日" prop="birthday">
+          <el-date-picker type="datetime" v-model="form.birthday" format="yyyy-MM-dd HH:mm:ss"
+            value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" placeholder="请选择日期" clearable>
+          </el-date-picker>
+        </el-form-item>
         <el-form-item label="性别" prop="gender">
-          <el-select v-model="form.gender" placeholder="请选择"  clearable :style="{width: '100%'}">
-            <el-option
-              v-for="dict in genderOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="dict.dictValue"
-            ></el-option>
+          <el-select v-model="form.gender" placeholder="请选择" clearable :style="{width: '100%'}">
+            <el-option v-for="dict in genderOptions" :key="dict.dictValue" :label="dict.dictLabel"
+              :value="dict.dictValue"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="手机号码" prop="mobile">
@@ -156,13 +138,9 @@
           <el-input v-model="form.wxOpenid" placeholder="请输入微信用户小程序唯一标识" />
         </el-form-item>
         <el-form-item label="用户来源" prop="customerSource">
-          <el-select v-model="form.customerSource" placeholder="请选择"  clearable :style="{width: '100%'}">
-            <el-option
-              v-for="dict in sourceOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="dict.dictValue"
-            ></el-option>
+          <el-select v-model="form.customerSource" placeholder="请选择" clearable :style="{width: '100%'}">
+            <el-option v-for="dict in sourceOptions" :key="dict.dictValue" :label="dict.dictLabel"
+              :value="dict.dictValue"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="用户头像">
@@ -170,7 +148,7 @@
         </el-form-item>
 
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" :autosize="{minRows: 4, maxRows: 4}"  placeholder="请输入内容" />
+          <el-input v-model="form.remark" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder="请输入内容" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -237,7 +215,13 @@
         // 表单参数
         form: {},
         // 表单校验
-        rules: {}
+        rules: {
+          birthday: [{
+            required: false,
+            message: '请选择日期选择',
+            trigger: 'change'
+          }],
+        }
       };
     },
     created() {

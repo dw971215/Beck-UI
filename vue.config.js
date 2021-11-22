@@ -35,6 +35,7 @@ module.exports = {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       //proxy 按照顺序匹配 优先执行
       [process.env.VUE_APP_TASK_API]: {
+        // target: `https://www.isdawei.cn`,
         target: `http://127.0.0.1:8280`,
         changeOrigin: true,
         pathRewrite: {
@@ -42,6 +43,7 @@ module.exports = {
         }
       },
       [process.env.VUE_APP_BASE_API]: {
+        // target: `https://www.isdawei.cn`,
         target: `http://127.0.0.1:8080`,
         changeOrigin: true,
         pathRewrite: {
