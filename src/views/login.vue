@@ -48,7 +48,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2021 ruoyi.vip All Rights Reserved.</span>
+     <a target="_blank" href="https://beian.miit.gov.cn" style="color: orange">备案/许可证编号为：皖ICP备2020017995号-1</a>
     </div>
   </div>
 </template>
