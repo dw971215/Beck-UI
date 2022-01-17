@@ -94,6 +94,25 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/goods',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'type/good/:categoryId',
+        component: (resolve) => require(['@/views/business/goods/good'], resolve),
+        name: 'Good',
+        meta: { title: '商品信息', icon: '' }
+      },
+      {
+        path: 'specs/type/:goodId',
+        component: (resolve) => require(['@/views/business/goods/specs'], resolve),
+        name: 'Specs',
+        meta: { title: '规格信息', icon: '' }
+      }
+    ]
+  },
+  {
     path: '/job',
     component: Layout,
     hidden: true,

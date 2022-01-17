@@ -8,7 +8,7 @@ function resolve(dir) {
 
 const name = defaultSettings.title || '贝克管理系统' // 标题
 
-const port = process.env.port || process.env.npm_config_port || 80 // 端口
+const port = process.env.port || process.env.npm_config_port || 81 // 端口
 
 // vue.config.js 配置说明
 //官方vue.config.js 参考文档 https://cli.vuejs.org/zh/config/#css-loaderoptions
@@ -36,14 +36,14 @@ module.exports = {
       //proxy 按照顺序匹配 优先执行
       [process.env.VUE_APP_TASK_API]: {
         // target: `https://www.isdawei.cn`,
-        target: `http://127.0.0.1:8280`,
+         target: `http://127.0.0.1:8280`,
         changeOrigin: true,
         pathRewrite: {
            ['^' + process.env.VUE_APP_TASK_API]: '/api'
         }
       },
       [process.env.VUE_APP_BASE_API]: {
-        // target: `https://www.isdawei.cn`,
+       // target: `https://www.isdawei.cn`,
         target: `http://127.0.0.1:8080`,
         changeOrigin: true,
         pathRewrite: {

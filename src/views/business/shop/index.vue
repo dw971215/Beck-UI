@@ -5,40 +5,16 @@
         <el-input v-model="queryParams.shopName" placeholder="请输入店铺名称" clearable size="small"
           @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <!-- <el-form-item label="区域编码" prop="areaCode">
-        <el-input v-model="queryParams.areaCode" placeholder="请输入区域编码" clearable size="small"
-          @keyup.enter.native="handleQuery" />
-      </el-form-item> -->
       <el-form-item label="联系电话" prop="mobile">
         <el-input v-model="queryParams.mobile" placeholder="请输入联系电话" clearable size="small"
           @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <!-- <el-form-item label="详细地址" prop="address">
-        <el-input v-model="queryParams.address" placeholder="请输入详细地址" clearable size="small"
-          @keyup.enter.native="handleQuery" />
-      </el-form-item> -->
-      <!-- <el-form-item label="门店经度" prop="longitude">
-        <el-input v-model="queryParams.longitude" placeholder="请输入门店经度" clearable size="small"
-          @keyup.enter.native="handleQuery" />
-      </el-form-item>
-      <el-form-item label="门店纬度" prop="latitude">
-        <el-input v-model="queryParams.latitude" placeholder="请输入门店纬度" clearable size="small"
-          @keyup.enter.native="handleQuery" />
-      </el-form-item> -->
       <el-form-item label="是否营业" prop="isOpen">
         <el-select v-model="queryParams.isOpen" placeholder="请选择是否营业" clearable size="small">
           <el-option v-for="dict in isOpenOptions" :key="dict.dictValue" :label="dict.dictLabel"
             :value="dict.dictValue" />
         </el-select>
       </el-form-item>
-      <!-- <el-form-item label="最低消费额" prop="minPrice">
-        <el-input v-model="queryParams.minPrice" placeholder="请输入最低消费额" clearable size="small"
-          @keyup.enter.native="handleQuery" />
-      </el-form-item>
-      <el-form-item label="包装费" prop="packingFee">
-        <el-input v-model="queryParams.packingFee" placeholder="请输入包装费" clearable size="small"
-          @keyup.enter.native="handleQuery" />
-      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -67,8 +43,6 @@
 
     <el-table v-loading="loading" :data="shopList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <!-- <el-table-column label="唯一标识" align="center" prop="id" /> -->
-      <!-- <el-table-column label="备注" align="center" prop="remark" /> -->
       <el-table-column label="店铺名称" align="center" prop="shopName" />
       <el-table-column label="门头照">
         <template slot-scope="scope">
@@ -83,12 +57,12 @@
       </el-table-column>
       <el-table-column label="联系电话" align="center" prop="mobile" />
       <el-table-column label="详细地址" align="center" prop="address" />
-      <el-table-column label="区域编码" align="center" prop="areaCode" />
+      <!-- <el-table-column label="区域编码" align="center" prop="areaCode" />
       <el-table-column label="门店经度" align="center" prop="longitude" />
-      <el-table-column label="门店纬度" align="center" prop="latitude" />
+      <el-table-column label="门店纬度" align="center" prop="latitude" /> -->
       <el-table-column label="是否营业" align="center" prop="isOpen" :formatter="isOpenFormat" />
       <el-table-column label="最低消费(元)" align="center" prop="minPrice" />
-      <el-table-column label="包装费(元)" align="center" prop="packingFee" />
+     <!-- <el-table-column label="包装费(元)" align="center" prop="packingFee" /> -->
       <el-table-column label="配送费(元)" align="center" prop="deliveryCost" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -118,7 +92,7 @@
         <el-form-item label="详细地址" prop="address">
           <el-input v-model="form.address" placeholder="请输入详细地址" />
         </el-form-item>
-        <el-form-item label="区域编码" prop="areaCode">
+       <!-- <el-form-item label="区域编码" prop="areaCode">
           <el-input v-model="form.areaCode" placeholder="请输入区域编码" />
         </el-form-item>
         <el-form-item label="门店经度" prop="longitude">
@@ -126,7 +100,7 @@
         </el-form-item>
         <el-form-item label="门店纬度" prop="latitude">
           <el-input v-model="form.latitude" placeholder="请输入门店纬度" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="是否营业" prop="isOpen">
           <el-select v-model="form.isOpen" placeholder="请选择是否营业">
             <el-option v-for="dict in isOpenOptions" :key="dict.dictValue" :label="dict.dictLabel"
@@ -136,9 +110,9 @@
         <el-form-item label="最低消费" prop="minPrice">
           <el-input v-model="form.minPrice" placeholder="请输入最低消费额" />
         </el-form-item>
-        <el-form-item label="包装费" prop="packingFee">
+        <!-- <el-form-item label="包装费" prop="packingFee">
           <el-input v-model="form.packingFee" placeholder="请输入包装费" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="配送费" prop="deliveryCost">
           <el-input v-model="form.deliveryCost" placeholder="请输入配送费" />
         </el-form-item>

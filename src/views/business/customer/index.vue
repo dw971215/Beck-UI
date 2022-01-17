@@ -1,18 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="登录账号" prop="loginName">
+      <!-- <el-form-item label="登录账号" prop="loginName">
         <el-input v-model="queryParams.loginName" placeholder="请输入登录账号" clearable size="small"
           @keyup.enter.native="handleQuery" />
-      </el-form-item>
-      <!--  <el-form-item label="登录密码" prop="loginPassword">
-        <el-input
-          v-model="queryParams.loginPassword"
-          placeholder="请输入登录密码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
       </el-form-item> -->
       <el-form-item label="用户昵称" prop="nickName">
         <el-input v-model="queryParams.nickName" placeholder="请输入用户昵称" clearable size="small"
@@ -26,10 +17,10 @@
         <el-input v-model="queryParams.mobile" placeholder="请输入手机号码" clearable size="small"
           @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="openid" prop="wxOpenid">
+      <!-- <el-form-item label="openid" prop="wxOpenid">
         <el-input v-model="queryParams.wxOpenid" placeholder="请输入微信用户openid" clearable size="small"
           @keyup.enter.native="handleQuery" />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="性别" prop="gender">
         <el-select v-model="queryParams.gender" placeholder="性别" clearable size="small" style="width: 205px">
           <el-option v-for="dict in genderOptions" :key="dict.dictValue" :label="dict.dictLabel"
@@ -70,10 +61,8 @@
 
     <el-table v-loading="loading" :data="customerList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <!-- <el-table-column label="主键,唯一标识" align="center" prop="id" /> -->
-      <!--  <el-table-column label="备注" align="center" prop="remark" /> -->
-      <el-table-column label="登录账号" align="center" prop="loginName" />
-      <!-- <el-table-column label="登录密码" align="center" prop="loginPassword" /> -->
+      <el-table-column label="用户昵称" align="center" prop="nickName" />
+      <!-- <el-table-column label="登录账号" align="center" prop="loginName" /> -->
       <el-table-column label="用户头像">
         <template slot-scope="scope">
           <el-popover placement="top" trigger="click" width="190">
@@ -87,10 +76,9 @@
       </el-table-column>
       <el-table-column label="性别" align="center" prop="gender" :formatter="genderFormat" />
       <el-table-column label="真实姓名" align="center" prop="realName" />
-      <el-table-column label="用户昵称" align="center" prop="nickName" />
       <el-table-column label="生日" align="center" prop="birthday" />
       <el-table-column label="手机号码" align="center" prop="mobile" />
-      <el-table-column label="微信用户openid" align="center" prop="wxOpenid" />
+      <!-- <el-table-column label="微信用户openid" align="center" prop="wxOpenid" /> -->
       <el-table-column label="用户来源" align="center" prop="customerSource" :formatter="sourceFormat" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -108,17 +96,15 @@
     <!-- 添加或修改用户对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <!-- <el-form-item label="删除标识" prop="delFlag">
-          <el-input v-model="form.delFlag" placeholder="请输入删除标识" />
-        </el-form-item> -->
-        <el-form-item label="登录账号" prop="loginName">
+        <!-- <el-form-item label="登录账号" prop="loginName">
           <el-input v-model="form.loginName" placeholder="请输入登录账号" />
+        </el-form-item> -->
+
+        <el-form-item label="用户昵称" prop="nickName">
+          <el-input v-model="form.nickName" placeholder="请输入用户昵称" />
         </el-form-item>
         <el-form-item label="真实姓名" prop="nickName">
           <el-input v-model="form.realName" placeholder="请输入真实姓名" />
-        </el-form-item>
-        <el-form-item label="用户昵称" prop="nickName">
-          <el-input v-model="form.nickName" placeholder="请输入用户昵称" />
         </el-form-item>
         <el-form-item label="生日" prop="birthday">
           <el-date-picker type="datetime" v-model="form.birthday" format="yyyy-MM-dd HH:mm:ss"
@@ -134,9 +120,9 @@
         <el-form-item label="手机号码" prop="mobile">
           <el-input v-model="form.mobile" :maxlength="11" placeholder="请输入手机号码" />
         </el-form-item>
-        <el-form-item label="openid" prop="wxOpenid">
+        <!-- <el-form-item label="openid" prop="wxOpenid">
           <el-input v-model="form.wxOpenid" placeholder="请输入微信用户小程序唯一标识" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="用户来源" prop="customerSource">
           <el-select v-model="form.customerSource" placeholder="请选择" clearable :style="{width: '100%'}">
             <el-option v-for="dict in sourceOptions" :key="dict.dictValue" :label="dict.dictLabel"

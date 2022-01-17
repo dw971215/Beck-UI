@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="类别名称" prop="name">
-        <el-input v-model="queryParams.name" placeholder="请输入类别名称" clearable size="small"
+      <el-form-item label="分类名称" prop="name">
+        <el-input v-model="queryParams.name" placeholder="请输入分类名称" clearable size="small"
           @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item>
@@ -33,8 +33,24 @@
 
     <el-table v-loading="loading" :data="categoryList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="类别" align="center" prop="name" />
-      <el-table-column label="图标地址" align="center" prop="icon" />
+     <el-table-column label="类别" align="center" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <router-link :to="'/goods/type/good/' + scope.row.id" class="link-type">
+            <span>{{ scope.row.name }}</span>
+          </router-link>
+        </template>
+      </el-table-column>
+      <el-table-column label="图标">
+        <template slot-scope="scope">
+          <el-popover placement="top" trigger="click" width="190">
+            <a :href="scope.row.icon" target="_blank" title="查看最大化图片">
+              <img :src="scope.row.icon" style="width: 160px;height:160px">
+            </a>
+            <img slot="reference" :src="scope.row.icon" :alt="scope.row.icon"
+              style="max-height: 60px;max-width: 60px;border:none;" />
+          </el-popover>
+        </template>
+      </el-table-column>
       <el-table-column label="排序" align="center" prop="sort" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -52,14 +68,14 @@
     <!-- 添加或修改商品分类对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="类别名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入类别名称" />
+        <el-form-item label="分类名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入分类名称" />
         </el-form-item>
-        <el-form-item label="图标地址" prop="icon">
-          <el-input v-model="form.icon" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="图标">
+          <imageUpload v-model="form.icon" />
         </el-form-item>
-        <el-form-item label="排序" prop="sort">
-          <el-input v-model="form.sort" placeholder="请输入排序" />
+        <el-form-item label="显示排序" prop="sort">
+          <el-input-number v-model="form.sort" controls-position="right" :min="0" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
@@ -82,10 +98,10 @@
     updateCategory,
     exportCategory
   } from "@/api/business/category";
-
+  import ImageUpload from '@/components/ImageUpload';
   export default {
-    name: "Category",
-    components: {},
+    name: "Goods",
+    components: {ImageUpload},
     data() {
       return {
         // 遮罩层
