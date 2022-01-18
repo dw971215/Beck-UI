@@ -8,7 +8,13 @@ export function listCustomer(query) {
     params: query
   })
 }
-
+// 查询用户下拉树结构
+export function treeselect() {
+  return request({
+    url: '/business/customer/treeselect',
+    method: 'get'
+  })
+}
 // 查询用户详细
 export function getCustomer(id) {
   return request({

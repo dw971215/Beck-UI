@@ -1,22 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <!-- <el-form-item label="会员Id" prop="user.id">
-        <el-input v-model="queryParams.user.id" placeholder="请输入会员id" clearable size="small"
-          @keyup.enter.native="handleQuery" />
-      </el-form-item> -->
-      <el-form-item label="会员积分" prop="pointNum">
-        <el-input v-model="queryParams.pointNum" placeholder="请输入会员积分" clearable size="small"
+      <el-form-item label="会员昵称" prop="params.nickName">
+        <el-input v-model="queryParams.params.nickName" placeholder="请输入会员昵称" clearable size="small"
           @keyup.enter.native="handleQuery" />
       </el-form-item>
-     <!-- <el-form-item label="余额" prop="balance">
-        <el-input v-model="queryParams.balance" placeholder="请输入余额" clearable size="small"
-          @keyup.enter.native="handleQuery" />
-      </el-form-item>
-      <el-form-item label="当前成长值" prop="currentValue">
-        <el-input v-model="queryParams.currentValue" placeholder="请输入当前成长值" clearable size="small"
-          @keyup.enter.native="handleQuery" />
-      </el-form-item> -->
       <el-form-item label="会员等级" prop="memberLevel">
         <el-input v-model="queryParams.memberLevel" placeholder="请输入会员等级" clearable size="small"
           @keyup.enter.native="handleQuery" />
@@ -28,10 +16,10 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
           v-hasPermi="['business:assets:add']">新增</el-button>
-      </el-col>
+      </el-col> -->
       <el-col :span="1.5">
         <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
           v-hasPermi="['business:assets:edit']">修改</el-button>
@@ -70,9 +58,6 @@
     <!-- 添加或修改用户资产对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-       <!-- <el-form-item label="会员id" prop="user.id">
-          <el-input v-model="form.user.id" placeholder="请输入会员id" />
-        </el-form-item> -->
         <el-form-item label="会员积分" prop="pointNum">
           <el-input v-model="form.pointNum" placeholder="请输入会员积分" />
         </el-form-item>
@@ -136,10 +121,10 @@
         queryParams: {
           pageNum: 1,
           pageSize: 10,
-          pointNum: null,
-          balance: null,
-          currentValue: null,
-          memberLevel: null
+          memberLevel: null,
+          params:{
+            nickName:''
+          }
         },
         // 表单参数
         form: {},
@@ -175,11 +160,6 @@
           updateTime: null,
           remark: null,
           delFlag: null,
-          user: {
-            id: null,
-            nickName: null,
-            realName: null
-          },
           pointNum: null,
           balance: null,
           currentValue: null,

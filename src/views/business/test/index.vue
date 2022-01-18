@@ -72,6 +72,7 @@
           <el-table-column type="selection" width="55" align="center" />
           <el-table-column label="会员用户" align="center" prop="user.nickName" />
           <el-table-column label="收货人姓名" align="center" prop="name" />
+          <!-- <el-table-column label="备注" align="center" prop="remark" /> -->
           <el-table-column label="性别" align="center" prop="sex" :formatter="sexFormat" />
           <el-table-column label="联系方式" align="center" prop="mobile" />
           <el-table-column label="收货地址" align="center" prop="address" />
@@ -106,8 +107,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="联系方式" prop="mobile">
-          <el-input v-model="form.mobile" placeholder="请输入手机号" :maxlength="11" show-word-limit clearable
-            prefix-icon='el-icon-mobile' :style="{width: '100%'}"></el-input>
+          <el-input v-model="form.mobile" placeholder="请输入联系方式" />
         </el-form-item>
         <el-form-item label="收货地址" prop="address">
           <el-input v-model="form.address" placeholder="请输入收货地址" />
@@ -168,8 +168,8 @@
         addressList: [],
         // 弹出层标题
         title: "",
-        // 部门树选项
-        userOptions: undefined,
+        // 用户下拉选项
+        userOptions:'',
         // 是否显示弹出层
         open: false,
         // 会员昵称
@@ -191,41 +191,18 @@
           mobile: null,
           address: null,
           doorNumber: null,
-          params: {
-            userId: ''
+          params:{
+            userId:''
           }
         },
         // 表单校验
         rules: {
-          name: [{
-            required: true,
-            message: "收货人不能为空",
-            trigger: "blur"
-          }],
-          sex: [{
-            required: true,
-            message: "性别不能为空",
-            trigger: "blur"
-          }],
-          address: [{
-            required: true,
-            message: "收货地址不能为空",
-            trigger: "blur"
-          }],
-          mobile: [{
-            required: true,
-            message: '请输入手机号',
-            trigger: 'blur'
-          }, {
-            pattern: /^1(3|4|5|7|8|9)\d{9}$/,
-            message: '手机号格式错误',
-            trigger: 'blur'
-          }],
+
         }
       };
     },
     watch: {
-      // 根据名称筛选部门树
+      // 根据名称筛选用户树
       nickName(val) {
         this.$refs.tree.filter(val);
       }
@@ -240,19 +217,6 @@
       });
     },
     methods: {
-      /** 查询用户列表 */
-      getList() {
-        this.loading = true;
-        listAddress(this.queryParams).then(response => {
-          this.addressList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        });
-      },
-      // 性别字典翻译
-      sexFormat(row, column) {
-        return this.selectDictLabel(this.sexOptions, row.sex);
-      },
       /** 查询用户树结构 */
       getTreeselect() {
         treeselect().then(response => {
@@ -269,6 +233,20 @@
         this.queryParams.params.userId = data.id;
         this.getList();
       },
+
+      /** 查询用户列表 */
+     getList() {
+       this.loading = true;
+       listAddress(this.queryParams).then(response => {
+         this.addressList = response.rows;
+         this.total = response.total;
+         this.loading = false;
+       });
+     },
+     // 性别字典翻译
+     sexFormat(row, column) {
+       return this.selectDictLabel(this.sexOptions, row.sex);
+     },
       // 取消按钮
       cancel() {
         this.open = false;
@@ -297,16 +275,16 @@
         };
         this.resetForm("form");
       },
-      /** 搜索按钮操作 */
-      handleQuery() {
-        this.queryParams.pageNum = 1;
-        this.getList();
-      },
-      /** 重置按钮操作 */
-      resetQuery() {
-        this.resetForm("queryForm");
-        this.handleQuery();
-      },
+     /** 搜索按钮操作 */
+     handleQuery() {
+       this.queryParams.pageNum = 1;
+       this.getList();
+     },
+     /** 重置按钮操作 */
+     resetQuery() {
+       this.resetForm("queryForm");
+       this.handleQuery();
+     },
       // 多选框选中数据
       handleSelectionChange(selection) {
         this.ids = selection.map(item => item.id)
@@ -320,64 +298,65 @@
         this.title = "添加收货地址";
       },
       /** 修改按钮操作 */
-      handleUpdate(row) {
-        this.reset();
-        const id = row.id || this.ids
-        getAddress(id).then(response => {
-          this.form = response.data;
-          this.open = true;
-          this.title = "修改收货地址";
-        });
-      },
-      /** 提交按钮 */
-      submitForm() {
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            if (this.form.id != null) {
-              updateAddress(this.form).then(response => {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-              });
-            } else {
-              addAddress(this.form).then(response => {
-                this.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
-              });
+        handleUpdate(row) {
+          this.reset();
+          this.getTreeselect();
+          const id = row.id || this.ids
+          getAddress(id).then(response => {
+            this.form = response.data;
+            this.open = true;
+            this.title = "修改收货地址";
+          });
+        },
+        /** 提交按钮 */
+        submitForm() {
+          this.$refs["form"].validate(valid => {
+            if (valid) {
+              if (this.form.id != null) {
+                updateAddress(this.form).then(response => {
+                  this.msgSuccess("修改成功");
+                  this.open = false;
+                  this.getList();
+                });
+              } else {
+                addAddress(this.form).then(response => {
+                  this.msgSuccess("新增成功");
+                  this.open = false;
+                  this.getList();
+                });
+              }
             }
-          }
-        });
-      },
-      /** 删除按钮操作 */
-      handleDelete(row) {
-        const ids = row.id || this.ids;
-        this.$confirm('是否确认删除收货地址编号为"' + ids + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delAddress(ids);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(() => {});
-      },
-      /** 导出按钮操作 */
-      handleExport() {
-        const queryParams = this.queryParams;
-        this.$confirm('是否确认导出所有收货地址数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.exportLoading = true;
-          return exportAddress(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-          this.exportLoading = false;
-        }).catch(() => {});
+          });
+        },
+        /** 删除按钮操作 */
+        handleDelete(row) {
+          const ids = row.id || this.ids;
+          this.$confirm('是否确认删除收货地址编号为"' + ids + '"的数据项?', "警告", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(function() {
+            return delAddress(ids);
+          }).then(() => {
+            this.getList();
+            this.msgSuccess("删除成功");
+          }).catch(() => {});
+        },
+        /** 导出按钮操作 */
+        handleExport() {
+          const queryParams = this.queryParams;
+          this.$confirm('是否确认导出所有收货地址数据项?', "警告", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(() => {
+            this.exportLoading = true;
+            return exportAddress(queryParams);
+          }).then(response => {
+            this.download(response.msg);
+            this.exportLoading = false;
+          }).catch(() => {});
+        }
       }
-    }
   };
 </script>
